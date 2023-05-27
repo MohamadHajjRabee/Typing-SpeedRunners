@@ -1,0 +1,52 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background: linear-gradient(-45deg, #536976, #1E293B);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.input-text{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: pre-wrap;
+}
+.user-input{
+    display: inline;
+    white-space: pre-wrap;
+    caret-color: transparent;
+    user-select: none;
+}
+.user-input:focus{
+    outline: none;
+}
+@keyframes firstLetterAnimate {
+    from{text-decoration: none;}
+    to{text-decoration: underline;}
+}
+#striked{
+    text-decoration: line-through;
+}
+.user-input:focus + .first-letter{
+    text-decoration: none;
+    animation: 0.5s infinite alternate firstLetterAnimate;
+}
