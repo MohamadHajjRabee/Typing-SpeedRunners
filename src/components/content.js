@@ -16,7 +16,6 @@ function Content(){
     const [fetchedText, setFetchedText] = useState("");
     const [textLength, setTextLength] = useState(60)
     const [characters, setCharacters] = useState(0)
-    const [ipt, setInpt] = useState(null)
     function updateInput(event){
         if(!isRunning){
             setIsRunning(true);
@@ -54,7 +53,8 @@ function Content(){
         if(inputRef.current.value){
             //const words = inputRef.current.value.trim().split(/\s+/).length;
             const words = inputRef.current.value.length;
-            const finalScore = Math.floor((words / 5) / (originTime / 60));
+            const elapsedTime = originTime - time;
+            const finalScore = Math.floor((words / 5) / (elapsedTime / 60));
             setScore(finalScore)
         }
     }
