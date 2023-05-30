@@ -16,6 +16,15 @@ function Content(){
     const [fetchedText, setFetchedText] = useState("");
     const [textLength, setTextLength] = useState(60)
     const [characters, setCharacters] = useState(0)
+    const [highestScore, setHighestScore] = useState(0)
+
+    useEffect(() => {
+        const storedVariable = localStorage.getItem('highestScore');
+        if (storedVariable) {
+            console.log('86')
+            setHighestScore(parseInt(storedVariable));
+        }
+    }, []);
     function updateInput(event){
         if(!isRunning){
             setIsRunning(true);
@@ -51,11 +60,14 @@ function Content(){
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function calculateScore(){
         if(inputRef.current.value){
-            //const words = inputRef.current.value.trim().split(/\s+/).length;
             const words = inputRef.current.value.length;
             const elapsedTime = originTime - time;
             const finalScore = Math.floor((words / 5) / (elapsedTime / 60));
             setScore(finalScore)
+            if(!isRunning && finalScore > highestScore){
+                setHighestScore(finalScore)
+                localStorage.setItem("highestScore", finalScore.toString())
+            }
         }
     }
 
@@ -74,6 +86,7 @@ function Content(){
             inputRef.current.innerHTML = "";
         }
     }
+
 
     useEffect(() => {
         if (isRunning && time > 0 && intervalRef.current === 0) {
@@ -114,7 +127,7 @@ function Content(){
     return (
         <>
             <div className="input-div container flex flex-col justify-evenly min-h-[calc(100vh-64px)]  mx-auto 2xl:max-w-screen-lg xl:max-w-screen-lg">
-                <TextBox inputRef={inputRef} updateInput={updateInput} wrongCharacters={wrongCharacters} time={time} enableTyping={enableTyping} text={text} score={score} stopFetching={stopFetching} characters={characters}/>
+                <TextBox inputRef={inputRef} updateInput={updateInput} wrongCharacters={wrongCharacters} time={time} enableTyping={enableTyping} text={text} score={score} stopFetching={stopFetching} characters={characters} highestScore={highestScore}/>
                 <div className="flex justify-center text-slate-50 my-3">
                     <Button value="30" click={updateTime} text="30 Seconds" />
                     <Button value="60" click={updateTime} text="1 Minute" />
@@ -151,6 +164,7 @@ function TextBox(props){
                 <span>WPM: {props.score}</span>
                 <span>CPM: {props.score * 5}</span>
                 <span>Characters: {props.characters}</span>
+                <span>Highest Score: {props.highestScore}</span>
             </div>
         </div>
     </>
